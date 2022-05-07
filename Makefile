@@ -8,5 +8,5 @@ test:
 azure-test:
 	ginkgo -r --label-filter='azure' --slow-spec-threshold 30s
 
-install: lint
+install:
 	go install .
