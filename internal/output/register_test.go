@@ -16,7 +16,7 @@ func testOutputFromString(s, param string) error {
 	return nil
 }
 
-func testOutputFromMap(s pipeline.StructuredData, extra []string) error {
+func testOutputFromMap(s pipeline.StructuredData, param string, extra []string) error {
 	iHaveBeenCalled = true
 	return nil
 }
@@ -55,7 +55,7 @@ var _ = Describe("Register", func() {
 		})
 		It("the map function is called successfully", func() {
 			RegisterMapFunction("t5", testOutputFromMap)
-			register["t5"].mapOutputFunction(pipeline.GenericMap{"dummy": "value"}, nil)
+			register["t5"].mapOutputFunction(pipeline.GenericMap{"dummy": "value"}, "", nil)
 			Expect(iHaveBeenCalled).To(BeTrue())
 		})
 	})

@@ -8,7 +8,7 @@ import (
 )
 
 type stringOutputFunctionType func(string, string) error
-type mapOutputFunctionType func(pipeline.StructuredData, []string) error
+type mapOutputFunctionType func(pipeline.StructuredData, string, []string) error
 
 type outputFunc struct {
 	stringOutputFunction stringOutputFunctionType
@@ -47,8 +47,17 @@ func PushString(outputArg string, outputString string) error {
 }
 
 func PushMap(outputArg string, outputData pipeline.StructuredData, extra []string) error {
-	if f, ok := register[outputArg]; ok {
-		err := f.mapOutputFunction(outputData, extra)
+	outputArgArray := strings.Split(outputArg, ":")
+
+	if f, ok := register[outputArgArray[0]]; ok {
+		var parameter string
+		if len(outputArgArray) == 1 {
+			parameter = ""
+		} else {
+			parameter = outputArgArray[1]
+		}
+
+		err := f.mapOutputFunction(outputData, parameter, extra)
 		return err
 	}
 	return errors.New("Unknown output: " + outputArg)
