@@ -81,6 +81,17 @@ Prerequisites: [go](https://go.dev) environment
 
 run: `make install`
 
-## Run tests
+## Run unit tests
 
 run: `make tests`
+
+## Run the Azure tests
+
+- Create an Azure [key vault](https://azure.microsoft.com/en-gb/services/key-vault/#product-overview)
+- Configure the access policy or RBAC so the user has full access to secrets (including purge)
+- Login via az cli
+- Export the key vault name and run the Azure tests
+
+  ```
+  % KEYVAULT_NAME=myYaqTestKeyVault make azure-test
+  ```
