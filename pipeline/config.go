@@ -27,8 +27,6 @@ func (i *arrayFlags) Set(value string) error {
 	return nil
 }
 
-var inputFlags arrayFlags
-
 func GetConfig(progname string, args []string) (*Config, string, error) {
 	flags := flag.NewFlagSet(progname, flag.ContinueOnError)
 	var outputBuffer bytes.Buffer
