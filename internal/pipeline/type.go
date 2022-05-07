@@ -12,6 +12,7 @@ type GenericArray []interface{}
 
 type StructuredData interface {
 	Append(StructuredData) StructuredData
+	Map() GenericMap
 }
 
 func (d GenericMap) Append(newData StructuredData) StructuredData {
@@ -26,6 +27,10 @@ func (d GenericMap) Append(newData StructuredData) StructuredData {
 	}
 }
 
+func (d GenericMap) Map() GenericMap {
+	return d
+}
+
 func (d GenericArray) Append(newData StructuredData) StructuredData {
 	if a2, ok := newData.(GenericArray); ok {
 		a := append(d, a2...)
@@ -36,6 +41,10 @@ func (d GenericArray) Append(newData StructuredData) StructuredData {
 	} else {
 		panic(fmt.Sprintf("Can't append %v to %v", newData, d))
 	}
+}
+
+func (d GenericArray) Map() GenericMap {
+	return nil
 }
 
 func mergeMaps(m1, m2 GenericMap) GenericMap {
