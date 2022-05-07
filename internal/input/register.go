@@ -6,55 +6,55 @@ import (
 	"github.com/saliceti/yaq/internal/pipeline"
 )
 
-type stringOutputFunctionType func(string) (string, error)
-type mapOutputFunctionType func(string) (pipeline.StructuredData, error)
+type stringFunc func(string) (string, error)
+type mapFunc func(string) (pipeline.StructuredData, error)
 
 type inputFunc struct {
-	stringOutputFunction stringOutputFunctionType
-	mapOutputFunction    mapOutputFunctionType
+	stringFunc stringFunc
+	mapFunc    mapFunc
 }
 
-type inputFunctionRegister map[string]inputFunc
+type inputFuncRegister map[string]inputFunc
 
-var register = inputFunctionRegister{}
+var register = inputFuncRegister{}
 
-func RegisterStringFunction(name string, inputFunction stringOutputFunctionType) {
-	register[name] = inputFunc{stringOutputFunction: inputFunction}
+func RegisterStringFunction(name string, inputFunction stringFunc) {
+	register[name] = inputFunc{stringFunc: inputFunction}
 }
-func RegisterMapFunction(name string, inputFunction mapOutputFunctionType) {
-	register[name] = inputFunc{mapOutputFunction: inputFunction}
+func RegisterMapFunction(name string, inputFunction mapFunc) {
+	register[name] = inputFunc{mapFunc: inputFunction}
 }
 
 func (f inputFunc) isMapFunc() bool {
-	return f.mapOutputFunction != nil
+	return f.mapFunc != nil
 }
 
 func ReadString(inputArg string) (string, error) {
 	inputName, parameter := pipeline.SplitArg(inputArg)
 
-	f, err := lookupInputFunction(inputName)
+	f, err := lookupInputFunc(inputName)
 	if err != nil {
 		return "", err
 	}
 
-	return f.stringOutputFunction(parameter)
+	return f.stringFunc(parameter)
 }
 
 func ReadMap(inputArg string) (pipeline.StructuredData, error) {
 	inputName, parameter := pipeline.SplitArg(inputArg)
 
-	f, err := lookupInputFunction(inputName)
+	f, err := lookupInputFunc(inputName)
 	if err != nil {
 		return nil, err
 	}
 
-	return f.mapOutputFunction(parameter)
+	return f.mapFunc(parameter)
 }
 
 func CreatesMap(inputArg string) (bool, error) {
 	inputName, _ := pipeline.SplitArg(inputArg)
 
-	f, err := lookupInputFunction(inputName)
+	f, err := lookupInputFunc(inputName)
 	if err != nil {
 		return false, err
 	}
@@ -62,7 +62,7 @@ func CreatesMap(inputArg string) (bool, error) {
 	return f.isMapFunc(), nil
 }
 
-func lookupInputFunction(inputName string) (*inputFunc, error) {
+func lookupInputFunc(inputName string) (*inputFunc, error) {
 	if f, ok := register[inputName]; ok {
 		return &f, nil
 	}

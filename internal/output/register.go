@@ -6,54 +6,54 @@ import (
 	"github.com/saliceti/yaq/internal/pipeline"
 )
 
-type stringOutputFunctionType func(string, string) error
-type mapOutputFunctionType func(pipeline.StructuredData, string, []string) error
+type stringFunc func(string, string) error
+type mapFunc func(pipeline.StructuredData, string, []string) error
 
 type outputFunc struct {
-	stringOutputFunction stringOutputFunctionType
-	mapOutputFunction    mapOutputFunctionType
+	stringFunc stringFunc
+	mapFunc    mapFunc
 }
 type outputFuncRegister map[string]outputFunc
 
 var register = outputFuncRegister{}
 
 func (f outputFunc) isMapFunc() bool {
-	return f.mapOutputFunction != nil
+	return f.mapFunc != nil
 }
 
-func RegisterStringFunction(name string, outputFunction stringOutputFunctionType) {
-	register[name] = outputFunc{stringOutputFunction: outputFunction}
+func RegisterStringFunction(name string, outputFunction stringFunc) {
+	register[name] = outputFunc{stringFunc: outputFunction}
 }
-func RegisterMapFunction(name string, outputFunction mapOutputFunctionType) {
-	register[name] = outputFunc{mapOutputFunction: outputFunction}
+func RegisterMapFunction(name string, outputFunction mapFunc) {
+	register[name] = outputFunc{mapFunc: outputFunction}
 }
 
 func PushString(outputArg string, outputString string) error {
 	outputName, parameter := pipeline.SplitArg(outputArg)
 
-	f, err := lookupOutputFunction(outputName)
+	f, err := lookupOutputFunc(outputName)
 	if err != nil {
 		return err
 	}
 
-	return f.stringOutputFunction(outputString, parameter)
+	return f.stringFunc(outputString, parameter)
 }
 
 func PushMap(outputArg string, outputData pipeline.StructuredData, extra []string) error {
 	outputName, parameter := pipeline.SplitArg(outputArg)
 
-	f, err := lookupOutputFunction(outputName)
+	f, err := lookupOutputFunc(outputName)
 	if err != nil {
 		return err
 	}
 
-	return f.mapOutputFunction(outputData, parameter, extra)
+	return f.mapFunc(outputData, parameter, extra)
 }
 
 func RequiresMap(outputArg string) (bool, error) {
 	outputName, _ := pipeline.SplitArg(outputArg)
 
-	f, err := lookupOutputFunction(outputName)
+	f, err := lookupOutputFunc(outputName)
 	if err != nil {
 		return false, err
 	}
@@ -61,7 +61,7 @@ func RequiresMap(outputArg string) (bool, error) {
 	return f.isMapFunc(), nil
 }
 
-func lookupOutputFunction(outputName string) (*outputFunc, error) {
+func lookupOutputFunc(outputName string) (*outputFunc, error) {
 	if f, ok := register[outputName]; ok {
 		return &f, nil
 	}

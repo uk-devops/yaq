@@ -6,12 +6,12 @@ import (
 	"github.com/saliceti/yaq/internal/pipeline"
 )
 
-type loadFunctionType func(string) (pipeline.StructuredData, error)
-type loadFunctionRegister map[string]loadFunctionType
+type loadFunc func(string) (pipeline.StructuredData, error)
+type loadFuncRegister map[string]loadFunc
 
-var FunctionRegister = loadFunctionRegister{}
+var FunctionRegister = loadFuncRegister{}
 
-func Register(name string, loadFunction loadFunctionType) {
+func Register(name string, loadFunction loadFunc) {
 	FunctionRegister[name] = loadFunction
 }
 

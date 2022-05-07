@@ -23,14 +23,14 @@ func testInputMap(inputParameter string) (pipeline.StructuredData, error) {
 var _ = Describe("Register", func() {
 	Context("real function: stdin", func() {
 		It("registers stdin", func() {
-			Expect(reflect.ValueOf(register["stdin"].stringOutputFunction).Pointer()).To(
+			Expect(reflect.ValueOf(register["stdin"].stringFunc).Pointer()).To(
 				Equal(reflect.ValueOf(ReadFromStdin).Pointer()))
 		})
 	})
 	Context("the function exists", func() {
 		It("registers the function", func() {
 			RegisterStringFunction("t1", testInputNoParam)
-			Expect(reflect.ValueOf(register["t1"].stringOutputFunction).Pointer()).To(
+			Expect(reflect.ValueOf(register["t1"].stringFunc).Pointer()).To(
 				Equal(reflect.ValueOf(testInputNoParam).Pointer()))
 		})
 		Context("no parameter", func() {
@@ -68,7 +68,7 @@ var _ = Describe("Register", func() {
 	Context("map function", func() {
 		It("registers the function", func() {
 			RegisterMapFunction("t6", testInputMap)
-			Expect(reflect.ValueOf(register["t6"].mapOutputFunction).Pointer()).To(
+			Expect(reflect.ValueOf(register["t6"].mapFunc).Pointer()).To(
 				Equal(reflect.ValueOf(testInputMap).Pointer()))
 		})
 	})

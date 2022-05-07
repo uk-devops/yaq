@@ -6,20 +6,20 @@ import (
 	"github.com/saliceti/yaq/internal/pipeline"
 )
 
-type transformFunctionType func(pipeline.StructuredData, string) (pipeline.StructuredData, error)
+type transformFunc func(pipeline.StructuredData, string) (pipeline.StructuredData, error)
 
-type functionRegister map[string]transformFunctionType
+type funcRegister map[string]transformFunc
 
-var FunctionRegister = functionRegister{}
+var FunctionRegister = funcRegister{}
 
-func RegisterTransformFunction(name string, processMapFunction transformFunctionType) {
+func RegisterTransformFunction(name string, processMapFunction transformFunc) {
 	FunctionRegister[name] = processMapFunction
 }
 
 func TransformWith(transformArg string, inputMap pipeline.StructuredData) (pipeline.StructuredData, error) {
 	transformName, parameter := pipeline.SplitArg(transformArg)
 
-	f, err := lookupTransformFunction(transformName)
+	f, err := lookupTransformFunc(transformName)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func TransformWith(transformArg string, inputMap pipeline.StructuredData) (pipel
 	return f(inputMap, parameter)
 }
 
-func lookupTransformFunction(transformName string) (transformFunctionType, error) {
+func lookupTransformFunc(transformName string) (transformFunc, error) {
 	if f, ok := FunctionRegister[transformName]; ok {
 		return f, nil
 	}

@@ -6,12 +6,12 @@ import (
 	"github.com/saliceti/yaq/internal/pipeline"
 )
 
-type dumpFunctionType func(pipeline.StructuredData) (string, error)
-type dumpFunctionRegister map[string]dumpFunctionType
+type dumpFunc func(pipeline.StructuredData) (string, error)
+type dumpFuncRegister map[string]dumpFunc
 
-var FunctionRegister = dumpFunctionRegister{}
+var FunctionRegister = dumpFuncRegister{}
 
-func Register(name string, dumpFunction dumpFunctionType) {
+func Register(name string, dumpFunction dumpFunc) {
 	FunctionRegister[name] = dumpFunction
 }
 
