@@ -34,10 +34,21 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 	flags.SetOutput(&outputBuffer)
 
 	var config Config
-	flags.Var(&config.Input, "i", "Pull from input (ex: stdin). -i may be repeated to fetch more inputs.")
-	flags.StringVar(&config.Transform, "t", "", "Apply transformation (ex: jq)")
-	flags.StringVar(&config.DumpTo, "d", "json", "Dump to format (ex: json, yaml)")
-	flags.StringVar(&config.Output, "o", "stdout", "Push to output (ex: stdout)")
+	flags.Var(&config.Input, "i", `Pull from input. -i may be repeated to fetch more inputs. Available inputs:
+-i stdin
+-i file:/path/to/file
+(required)`)
+	flags.StringVar(&config.Transform, "t", "", `Apply transformation to data. Available transformations:
+-t jq:"jq expression"
+(default: No transformation)`)
+	flags.StringVar(&config.DumpTo, "d", "json", `Dump to format. Available formats:
+-d json
+-d yaml
+`)
+	flags.StringVar(&config.Output, "o", "stdout", `Push to output. Available outputs:
+-o stdout
+-o file:/path/to/file
+`)
 
 	err := flags.Parse(args)
 	if err != nil {
