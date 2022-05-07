@@ -2,11 +2,9 @@ package dump
 
 import (
 	"errors"
-
-	"github.com/saliceti/yaq/pipeline"
 )
 
-type dumpFunctionType func(pipeline.GenericMap) (string, error)
+type dumpFunctionType func(interface{}) (string, error)
 type dumpFunctionRegister map[string]dumpFunctionType
 
 var FunctionRegister = dumpFunctionRegister{}
@@ -15,9 +13,9 @@ func Register(name string, dumpFunction dumpFunctionType) {
 	FunctionRegister[name] = dumpFunction
 }
 
-func MapToString(format string, inputMap pipeline.GenericMap) (string, error) {
+func MapToString(format string, inputData interface{}) (string, error) {
 	if f, ok := FunctionRegister[format]; ok {
-		outputString, err := f(inputMap)
+		outputString, err := f(inputData)
 		if err != nil {
 			return "", err
 		}

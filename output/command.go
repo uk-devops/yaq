@@ -13,7 +13,11 @@ func init() {
 	RegisterMapFunction("command", PushToCommandEnvVariables)
 }
 
-func PushToCommandEnvVariables(inputMap pipeline.GenericMap, command []string) error {
+func PushToCommandEnvVariables(inputData interface{}, command []string) error {
+	inputMap, ok := inputData.(pipeline.GenericMap)
+	if !ok {
+		return errors.New("command only accepts a map")
+	}
 	var cmd *exec.Cmd
 
 	if len(command) == 0 {

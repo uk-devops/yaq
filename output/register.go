@@ -2,12 +2,10 @@ package output
 
 import (
 	"errors"
-
-	"github.com/saliceti/yaq/pipeline"
 )
 
 type stringOutputFunctionType func(string)
-type mapOutputFunctionType func(pipeline.GenericMap, []string) error
+type mapOutputFunctionType func(interface{}, []string) error
 
 type outputFunctionRegister map[string]stringOutputFunctionType
 type mapOutputFunctionRegister map[string]mapOutputFunctionType
@@ -30,9 +28,9 @@ func PushString(outputArg string, outputString string) error {
 	return errors.New("Unknown output: " + outputArg)
 }
 
-func PushMap(outputArg string, outputMap pipeline.GenericMap, extra []string) error {
+func PushMap(outputArg string, outputData interface{}, extra []string) error {
 	if f, ok := MapFunctionRegister[outputArg]; ok {
-		err := f(outputMap, extra)
+		err := f(outputData, extra)
 		return err
 	}
 	return errors.New("Unknown output: " + outputArg)

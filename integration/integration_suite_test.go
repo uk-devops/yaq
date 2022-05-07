@@ -1,6 +1,7 @@
 package integration_test
 
 import (
+	"os/exec"
 	"testing"
 
 	. "github.com/onsi/ginkgo"
@@ -28,4 +29,12 @@ func build() string {
 	Expect(err).NotTo(HaveOccurred())
 
 	return binaryPath
+}
+
+func runProgram(path string, args []string) *gexec.Session {
+	cmd := exec.Command(path, args...)
+	session, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+	Expect(err).NotTo(HaveOccurred())
+
+	return session
 }

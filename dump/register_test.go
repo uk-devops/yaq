@@ -10,7 +10,7 @@ import (
 	"github.com/saliceti/yaq/pipeline"
 )
 
-func testDump(m pipeline.GenericMap) (string, error) {
+func testDump(m interface{}) (string, error) {
 	return "{structured output}", nil
 }
 

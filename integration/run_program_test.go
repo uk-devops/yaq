@@ -3,7 +3,6 @@ package integration_test
 import (
 	"io/ioutil"
 	"os"
-	"os/exec"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -67,7 +66,7 @@ var _ = Describe("Build and run", func() {
 			Eventually(session).Should(gexec.Exit(0))
 		})
 
-		It("prints usage", func() {
+		It("prints the data as json", func() {
 			Eventually(session.Out).Should(gbytes.Say(`{
   "brand": "peugeot"
 }`))
@@ -105,7 +104,7 @@ var _ = Describe("Build and run", func() {
 			Eventually(session).Should(gexec.Exit(0))
 		})
 
-		It("prints usage", func() {
+		It("prints the merged data as json", func() {
 			Eventually(session.Out).Should(gbytes.Say(`{
   "brand": "peugeot",
   "model": 205
@@ -113,11 +112,3 @@ var _ = Describe("Build and run", func() {
 		})
 	})
 })
-
-func runProgram(path string, args []string) *gexec.Session {
-	cmd := exec.Command(path, args...)
-	session, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
-	Expect(err).NotTo(HaveOccurred())
-
-	return session
-}

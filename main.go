@@ -28,7 +28,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	inputMap := pipeline.GenericMap{}
+	data := pipeline.StructuredData{}
 
 	for _, inputArg := range config.Input {
 
@@ -43,25 +43,23 @@ func main() {
 			os.Exit(3)
 		}
 
-		newInputMap, err := load.MapFromString(inputString)
+		newData, err := load.Unmarshal(inputString)
 		if err != nil {
 			log.Printf("Error: %v", err)
 			os.Exit(4)
 		}
 
-		for k, v := range newInputMap {
-			inputMap[k] = v
-		}
+		data.Append(newData)
 	}
 
 	if output.RequiresMap(config.Output) {
-		err = output.PushMap(config.Output, inputMap, config.Extra)
+		err = output.PushMap(config.Output, data.Data, config.Extra)
 		if err != nil {
 			log.Printf("Error: %v", err)
 			os.Exit(7)
 		}
 	} else {
-		outputString, err := dump.MapToString(config.DumpTo, inputMap)
+		outputString, err := dump.MapToString(config.DumpTo, data.Data)
 		if err != nil {
 			log.Printf("Error: %v", err)
 			os.Exit(5)

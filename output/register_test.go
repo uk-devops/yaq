@@ -16,7 +16,7 @@ func testOutputFromString(s string) {
 	iHaveBeenCalled = true
 }
 
-func testOutputFromMap(s pipeline.GenericMap, extra []string) error {
+func testOutputFromMap(s interface{}, extra []string) error {
 	iHaveBeenCalled = true
 	return nil
 }

@@ -2,6 +2,8 @@
 	"brand": "peugeot",
 	"model": 205,
 	"colour": "blue",
+	"wheels": "4",
+	"year": 1982,
 	"engine": {
 		"cylinders": 4,
 		"power": 300

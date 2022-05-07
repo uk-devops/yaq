@@ -1,0 +1,10 @@
+{
+	"brand": "renault",
+	"model": "4L",
+	"colour": "beige",
+	"year": 1972,
+	"engine": {
+		"cylinders": 2,
+		"power": 100
+	}
+}
