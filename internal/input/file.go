@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	Register("file", ReadFromFile)
+	RegisterStringFunction("file", ReadFromFile)
 }
 
 func ReadFromFile(path string) (string, error) {

@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	Register("stdin", ReadFromStdin)
+	RegisterStringFunction("stdin", ReadFromStdin)
 }
 
 func ReadFromStdin(_ string) (string, error) {

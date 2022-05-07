@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	Register("keyvault-secret-map", ReadFromKeyVault)
+	RegisterStringFunction("keyvault-secret-map", ReadFromKeyVault)
 }
 
 func ReadFromKeyVault(keyvaultSecret string) (string, error) {

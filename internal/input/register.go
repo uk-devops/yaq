@@ -3,27 +3,39 @@ package input
 import (
 	"errors"
 	"strings"
+
+	"github.com/saliceti/yaq/internal/pipeline"
 )
 
-type inputFunctionType func(string) (string, error)
-type inputFunctionRegister map[string]inputFunctionType
+type stringOutputFunctionType func(string) (string, error)
+type mapOutputFunctionType func(string) (pipeline.StructuredData, error)
 
-var FunctionRegister = inputFunctionRegister{}
+type inputFunc struct {
+	stringOutputFunction stringOutputFunctionType
+	mapOutputFunction    mapOutputFunctionType
+}
 
-func Register(name string, inputFunction inputFunctionType) {
-	FunctionRegister[name] = inputFunction
+type inputFunctionRegister map[string]inputFunc
+
+var register = inputFunctionRegister{}
+
+func RegisterStringFunction(name string, inputFunction stringOutputFunctionType) {
+	register[name] = inputFunc{stringOutputFunction: inputFunction}
+}
+func RegisterMapFunction(name string, inputFunction mapOutputFunctionType) {
+	register[name] = inputFunc{mapOutputFunction: inputFunction}
 }
 
 func ReadString(inputArg string) (string, error) {
 	inputArgArray := strings.Split(inputArg, ":")
-	if f, ok := FunctionRegister[inputArgArray[0]]; ok {
+	if f, ok := register[inputArgArray[0]]; ok {
 		var parameter string
 		if len(inputArgArray) == 1 {
 			parameter = ""
 		} else {
 			parameter = inputArgArray[1]
 		}
-		inputString, err := f(parameter)
+		inputString, err := f.stringOutputFunction(parameter)
 		if err != nil {
 			return inputString, err
 		}
@@ -31,4 +43,23 @@ func ReadString(inputArg string) (string, error) {
 	}
 
 	return "", errors.New("Unknown input: " + inputArg)
+}
+
+func ReadMap(inputArg string) (pipeline.StructuredData, error) {
+	inputArgArray := strings.Split(inputArg, ":")
+	if f, ok := register[inputArgArray[0]]; ok {
+		var parameter string
+		if len(inputArgArray) == 1 {
+			parameter = ""
+		} else {
+			parameter = inputArgArray[1]
+		}
+		inputMap, err := f.mapOutputFunction(parameter)
+		if err != nil {
+			return inputMap, err
+		}
+		return inputMap, nil
+	}
+
+	return nil, errors.New("Unknown input: " + inputArg)
 }

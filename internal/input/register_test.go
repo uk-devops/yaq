@@ -1,12 +1,11 @@
-package input_test
+package input
 
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/saliceti/yaq/internal/pipeline"
 
 	"reflect"
-
-	. "github.com/saliceti/yaq/internal/input"
 )
 
 func testInputNoParam(inputParameter string) (string, error) {
@@ -17,22 +16,26 @@ func testInputWithParam(inputParameter string) (string, error) {
 	return inputParameter, nil
 }
 
+func testInputMap(inputParameter string) (pipeline.StructuredData, error) {
+	return pipeline.GenericMap{}, nil
+}
+
 var _ = Describe("Register", func() {
 	Context("real function: stdin", func() {
 		It("registers stdin", func() {
-			Expect(reflect.ValueOf(FunctionRegister["stdin"]).Pointer()).To(
+			Expect(reflect.ValueOf(register["stdin"].stringOutputFunction).Pointer()).To(
 				Equal(reflect.ValueOf(ReadFromStdin).Pointer()))
 		})
 	})
 	Context("the function exists", func() {
 		It("registers the function", func() {
-			Register("t1", testInputNoParam)
-			Expect(reflect.ValueOf(FunctionRegister["t1"]).Pointer()).To(
+			RegisterStringFunction("t1", testInputNoParam)
+			Expect(reflect.ValueOf(register["t1"].stringOutputFunction).Pointer()).To(
 				Equal(reflect.ValueOf(testInputNoParam).Pointer()))
 		})
 		Context("no parameter", func() {
 			It("the function is called successfully", func() {
-				Register("t2", testInputNoParam)
+				RegisterStringFunction("t2", testInputNoParam)
 				output, err := ReadString("t2")
 				Expect(err).NotTo(HaveOccurred())
 				Expect(output).To(Equal("the output"))
@@ -40,7 +43,7 @@ var _ = Describe("Register", func() {
 		})
 		Context("a parameter is passed", func() {
 			It("calls the function with the parameter", func() {
-				Register("t4", testInputWithParam)
+				RegisterStringFunction("t4", testInputWithParam)
 				output, err := ReadString("t4:the-parameter")
 				Expect(err).NotTo(HaveOccurred())
 				Expect(output).To(Equal("the-parameter"))
@@ -48,7 +51,7 @@ var _ = Describe("Register", func() {
 		})
 		Context("2 parameters are passed", func() {
 			It("ignores the second parameter", func() {
-				Register("t5", testInputWithParam)
+				RegisterStringFunction("t5", testInputWithParam)
 				output, err := ReadString("t5:the-parameter:error-parameter")
 				Expect(err).NotTo(HaveOccurred())
 				Expect(output).To(Equal("the-parameter"))
@@ -62,5 +65,11 @@ var _ = Describe("Register", func() {
 			Expect(output).To(Equal(""))
 		})
 	})
-
+	Context("map function", func() {
+		It("registers the function", func() {
+			RegisterMapFunction("t6", testInputMap)
+			Expect(reflect.ValueOf(register["t6"].mapOutputFunction).Pointer()).To(
+				Equal(reflect.ValueOf(testInputMap).Pointer()))
+		})
+	})
 })
