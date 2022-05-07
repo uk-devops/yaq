@@ -3,10 +3,12 @@ package testutils
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+
 	//lint:ignore ST1001 this is only used for tests
 	. "github.com/onsi/gomega"
 )
@@ -31,4 +33,10 @@ func DeleteSecret(client *azsecrets.Client, secretName string) {
 
 	_, err = client.PurgeDeletedSecret(context.TODO(), secretName, nil)
 	Expect(err).NotTo(HaveOccurred())
+}
+
+func KeyvaultName() string {
+	kvName, KEYVAULT_NAME_is_present := os.LookupEnv("KEYVAULT_NAME")
+	Expect(KEYVAULT_NAME_is_present).To(BeTrue())
+	return kvName
 }
