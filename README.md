@@ -65,6 +65,11 @@ bash-3.2$ echo $code
 1234
 ```
 
+### Apply a transformation with jq syntax
+```shell
+% curl -s https://api.chucknorris.io/jokes/random  | yaq -i stdin -t jq:'.value | ascii_upcase' -o command -- bash -c 'echo $result && say $result'
+```
+
 ## Install
 
 Prerequisites: [go](https://go.dev) environment
