@@ -2,7 +2,6 @@ package output
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/saliceti/yaq/internal/pipeline"
 )
@@ -30,39 +29,41 @@ func RegisterMapFunction(name string, outputFunction mapOutputFunctionType) {
 }
 
 func PushString(outputArg string, outputString string) error {
-	outputArgArray := strings.Split(outputArg, ":")
+	outputName, parameter := pipeline.SplitArg(outputArg)
 
-	if f, ok := register[outputArgArray[0]]; ok {
-		var parameter string
-		if len(outputArgArray) == 1 {
-			parameter = ""
-		} else {
-			parameter = outputArgArray[1]
-		}
-
-		err := f.stringOutputFunction(outputString, parameter)
+	f, err := lookupOutputFunction(outputName)
+	if err != nil {
 		return err
 	}
-	return errors.New("Unknown output: " + outputArg)
+
+	return f.stringOutputFunction(outputString, parameter)
 }
 
 func PushMap(outputArg string, outputData pipeline.StructuredData, extra []string) error {
-	outputArgArray := strings.Split(outputArg, ":")
+	outputName, parameter := pipeline.SplitArg(outputArg)
 
-	if f, ok := register[outputArgArray[0]]; ok {
-		var parameter string
-		if len(outputArgArray) == 1 {
-			parameter = ""
-		} else {
-			parameter = outputArgArray[1]
-		}
-
-		err := f.mapOutputFunction(outputData, parameter, extra)
+	f, err := lookupOutputFunction(outputName)
+	if err != nil {
 		return err
 	}
-	return errors.New("Unknown output: " + outputArg)
+
+	return f.mapOutputFunction(outputData, parameter, extra)
 }
 
-func RequiresMap(outputArg string) bool {
-	return register[outputArg].isMapFunc()
+func RequiresMap(outputArg string) (bool, error) {
+	outputName, _ := pipeline.SplitArg(outputArg)
+
+	f, err := lookupOutputFunction(outputName)
+	if err != nil {
+		return false, err
+	}
+
+	return f.isMapFunc(), nil
+}
+
+func lookupOutputFunction(outputName string) (*outputFunc, error) {
+	if f, ok := register[outputName]; ok {
+		return &f, nil
+	}
+	return nil, errors.New("Unknown output: " + outputName)
 }

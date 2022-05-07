@@ -2,7 +2,6 @@ package input
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/saliceti/yaq/internal/pipeline"
 )
@@ -27,39 +26,30 @@ func RegisterMapFunction(name string, inputFunction mapOutputFunctionType) {
 }
 
 func ReadString(inputArg string) (string, error) {
-	inputArgArray := strings.Split(inputArg, ":")
-	if f, ok := register[inputArgArray[0]]; ok {
-		var parameter string
-		if len(inputArgArray) == 1 {
-			parameter = ""
-		} else {
-			parameter = inputArgArray[1]
-		}
-		inputString, err := f.stringOutputFunction(parameter)
-		if err != nil {
-			return inputString, err
-		}
-		return inputString, nil
+	inputName, parameter := pipeline.SplitArg(inputArg)
+
+	f, err := lookupInputFunction(inputName)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Unknown input: " + inputArg)
+	return f.stringOutputFunction(parameter)
 }
 
 func ReadMap(inputArg string) (pipeline.StructuredData, error) {
-	inputArgArray := strings.Split(inputArg, ":")
-	if f, ok := register[inputArgArray[0]]; ok {
-		var parameter string
-		if len(inputArgArray) == 1 {
-			parameter = ""
-		} else {
-			parameter = inputArgArray[1]
-		}
-		inputMap, err := f.mapOutputFunction(parameter)
-		if err != nil {
-			return inputMap, err
-		}
-		return inputMap, nil
+	inputName, parameter := pipeline.SplitArg(inputArg)
+
+	f, err := lookupInputFunction(inputName)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, errors.New("Unknown input: " + inputArg)
+	return f.mapOutputFunction(parameter)
+}
+
+func lookupInputFunction(inputName string) (*inputFunc, error) {
+	if f, ok := register[inputName]; ok {
+		return &f, nil
+	}
+	return nil, errors.New("Unknown input: " + inputName)
 }

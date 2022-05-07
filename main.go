@@ -65,7 +65,13 @@ func main() {
 		}
 	}
 
-	if output.RequiresMap(config.Output) {
+	outputRequiresMap, err := output.RequiresMap(config.Output)
+	if err != nil {
+		log.Printf("Error: %v", err)
+		os.Exit(9)
+	}
+
+	if outputRequiresMap {
 		err = output.PushMap(config.Output, data, config.Extra)
 		if err != nil {
 			log.Printf("Error: %v", err)

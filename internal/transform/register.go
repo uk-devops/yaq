@@ -2,7 +2,6 @@ package transform
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/saliceti/yaq/internal/pipeline"
 )
@@ -18,20 +17,19 @@ func RegisterTransformFunction(name string, processMapFunction transformFunction
 }
 
 func TransformWith(transformArg string, inputMap pipeline.StructuredData) (pipeline.StructuredData, error) {
-	transformArgArray := strings.Split(transformArg, ":")
-	if f, ok := FunctionRegister[transformArgArray[0]]; ok {
-		var parameter string
-		if len(transformArgArray) == 1 {
-			parameter = ""
-		} else {
-			parameter = transformArgArray[1]
-		}
-		outputMap, err := f(inputMap, parameter)
+	transformName, parameter := pipeline.SplitArg(transformArg)
 
-		if err != nil {
-			return nil, err
-		}
-		return outputMap, nil
+	f, err := lookupTransformFunction(transformName)
+	if err != nil {
+		return nil, err
 	}
-	return nil, errors.New("Unknown transformation: " + transformArg)
+
+	return f(inputMap, parameter)
+}
+
+func lookupTransformFunction(transformName string) (transformFunctionType, error) {
+	if f, ok := FunctionRegister[transformName]; ok {
+		return f, nil
+	}
+	return nil, errors.New("Unknown transform: " + transformName)
 }
