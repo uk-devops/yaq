@@ -1,5 +1,9 @@
+lint:
+	go vet ./...
+	staticcheck ./... 
+
 test:
 	ginkgo -r
 
-install:
+install: lint
 	go install .
