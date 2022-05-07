@@ -3,7 +3,7 @@ package load
 import (
 	"errors"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 type loadFunc func(string) (pipeline.StructuredData, error)

@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	. "github.com/saliceti/yaq/internal/output"
+	. "github.com/uk-devops/yaq/internal/output"
 )
 
 const INPUT_DATA = "input data"

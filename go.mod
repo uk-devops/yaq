@@ -1,4 +1,4 @@
-module github.com/saliceti/yaq
+module github.com/uk-devops/yaq
 
 go 1.17
 

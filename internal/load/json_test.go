@@ -6,8 +6,8 @@ import (
 
 	"strconv"
 
-	. "github.com/saliceti/yaq/internal/load"
-	"github.com/saliceti/yaq/internal/pipeline"
+	. "github.com/uk-devops/yaq/internal/load"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 var _ = Describe("json", func() {

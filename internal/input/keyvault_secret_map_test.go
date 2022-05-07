@@ -7,8 +7,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/saliceti/yaq/internal/input"
-	"github.com/saliceti/yaq/internal/testutils"
+	"github.com/uk-devops/yaq/internal/input"
+	"github.com/uk-devops/yaq/internal/testutils"
 )
 
 var _ = Describe("keyvault-secret-map", Label("azure"), func() {

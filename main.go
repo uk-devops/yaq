@@ -5,12 +5,12 @@ import (
 	"log"
 	"os"
 
-	"github.com/saliceti/yaq/internal/dump"
-	"github.com/saliceti/yaq/internal/input"
-	"github.com/saliceti/yaq/internal/load"
-	"github.com/saliceti/yaq/internal/output"
-	"github.com/saliceti/yaq/internal/pipeline"
-	"github.com/saliceti/yaq/internal/transform"
+	"github.com/uk-devops/yaq/internal/dump"
+	"github.com/uk-devops/yaq/internal/input"
+	"github.com/uk-devops/yaq/internal/load"
+	"github.com/uk-devops/yaq/internal/output"
+	"github.com/uk-devops/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/transform"
 )
 
 func main() {

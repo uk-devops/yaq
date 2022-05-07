@@ -7,8 +7,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/saliceti/yaq/internal/output"
-	"github.com/saliceti/yaq/internal/testutils"
+	"github.com/uk-devops/yaq/internal/output"
+	"github.com/uk-devops/yaq/internal/testutils"
 )
 
 var _ = Describe("keyvault-secret-map", Label("azure"), func() {

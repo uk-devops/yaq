@@ -5,8 +5,8 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/saliceti/yaq/internal/pipeline"
-	. "github.com/saliceti/yaq/internal/transform"
+	"github.com/uk-devops/yaq/internal/pipeline"
+	. "github.com/uk-devops/yaq/internal/transform"
 )
 
 func testTransform(sd pipeline.StructuredData, arg string) (pipeline.StructuredData, error) {

@@ -7,9 +7,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/saliceti/yaq/internal/output"
-	"github.com/saliceti/yaq/internal/pipeline"
-	"github.com/saliceti/yaq/internal/testutils"
+	"github.com/uk-devops/yaq/internal/output"
+	"github.com/uk-devops/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/testutils"
 )
 
 var _ = Describe("keyvault-secrets", Label("azure"), func() {

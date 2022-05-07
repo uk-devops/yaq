@@ -5,9 +5,9 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	. "github.com/saliceti/yaq/internal/dump"
+	. "github.com/uk-devops/yaq/internal/dump"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 func testDump(m pipeline.StructuredData) (string, error) {

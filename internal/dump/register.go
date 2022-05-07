@@ -3,7 +3,7 @@ package dump
 import (
 	"errors"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 type dumpFunc func(pipeline.StructuredData) (string, error)

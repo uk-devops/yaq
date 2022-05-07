@@ -3,7 +3,7 @@ package transform
 import (
 	"errors"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 type transformFunc func(pipeline.StructuredData, string) (pipeline.StructuredData, error)

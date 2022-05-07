@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 func init() {

@@ -25,7 +25,7 @@ var _ = AfterSuite(func() {
 })
 
 func build() string {
-	binaryPath, err := gexec.Build("github.com/saliceti/yaq")
+	binaryPath, err := gexec.Build("github.com/uk-devops/yaq")
 	Expect(err).NotTo(HaveOccurred())
 
 	return binaryPath

@@ -3,7 +3,7 @@ package output
 import (
 	"errors"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 type stringFunc func(string, string) error

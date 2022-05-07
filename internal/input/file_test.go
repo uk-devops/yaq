@@ -6,7 +6,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	. "github.com/saliceti/yaq/internal/input"
+	. "github.com/uk-devops/yaq/internal/input"
 )
 
 var _ = Describe("File", func() {

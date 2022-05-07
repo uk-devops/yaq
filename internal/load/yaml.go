@@ -1,7 +1,7 @@
 package load
 
 import (
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 	"gopkg.in/yaml.v3"
 )
 

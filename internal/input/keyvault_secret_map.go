@@ -3,7 +3,7 @@ package input
 import (
 	"strings"
 
-	"github.com/saliceti/yaq/internal/pipeline"
+	"github.com/uk-devops/yaq/internal/pipeline"
 )
 
 func init() {
