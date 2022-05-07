@@ -1,9 +1,12 @@
 lint:
 	go vet ./...
-	staticcheck ./... 
+	staticcheck ./...
 
 test:
-	ginkgo -r
+	ginkgo -r --label-filter='!azure'
+
+azure-test:
+	ginkgo -r --label-filter='azure'
 
 install: lint
 	go install .
