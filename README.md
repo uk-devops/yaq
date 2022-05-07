@@ -80,6 +80,15 @@ bash-3.2$ echo $code
 % yaq -i file:input.yml -i file:input.json -o keyvault-secret:myKeyvault/MySecret
 ```
 
+### Read and write all secrets in an Azure keyvault
+```shell
+% yaq -i keyvault-secrets:myKeyvault -d yaml -o file:input.yml
+```
+
+```shell
+% yaq -i file:input.yml -o keyvault-secrets:myKeyvault
+```
+
 ## Install
 
 Prerequisites: [go](https://go.dev) environment
