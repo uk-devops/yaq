@@ -9,11 +9,12 @@ import (
 
 // Config is a struct to store the initial configuration
 type Config struct {
-	Input  arrayFlags
-	DumpTo string
-	Output string
-	Extra  []string
-	Flags  flag.FlagSet
+	Input     arrayFlags
+	Transform string
+	DumpTo    string
+	Output    string
+	Extra     []string
+	Flags     flag.FlagSet
 }
 
 type arrayFlags []string
@@ -34,6 +35,7 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 
 	var config Config
 	flags.Var(&config.Input, "i", "Pull from input (ex: stdin). -i may be repeated to fetch more inputs.")
+	flags.StringVar(&config.Transform, "t", "", "Apply transformation (ex: jq)")
 	flags.StringVar(&config.DumpTo, "d", "json", "Dump to format (ex: json, yaml)")
 	flags.StringVar(&config.Output, "o", "stdout", "Push to output (ex: stdout)")
 

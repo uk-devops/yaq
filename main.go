@@ -10,6 +10,7 @@ import (
 	"github.com/saliceti/yaq/load"
 	"github.com/saliceti/yaq/output"
 	"github.com/saliceti/yaq/pipeline"
+	"github.com/saliceti/yaq/transform"
 )
 
 func main() {
@@ -53,6 +54,14 @@ func main() {
 			data = newData
 		} else {
 			data = data.Append(newData)
+		}
+	}
+
+	if config.Transform != "" {
+		data, err = transform.TransformWith(config.Transform, data)
+		if err != nil {
+			log.Printf("Error: %v", err)
+			os.Exit(8)
 		}
 	}
 
