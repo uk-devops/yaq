@@ -1,0 +1,7 @@
+---
+brand: peugeot
+model: 205
+colour: blue
+engine:
+  cylinders: 4
+  power: 300
