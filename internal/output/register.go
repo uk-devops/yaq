@@ -10,23 +10,29 @@ import (
 type stringOutputFunctionType func(string, string) error
 type mapOutputFunctionType func(pipeline.StructuredData, []string) error
 
-type outputFunctionRegister map[string]stringOutputFunctionType
-type mapOutputFunctionRegister map[string]mapOutputFunctionType
+type outputFunc struct {
+	stringOutputFunction stringOutputFunctionType
+	mapOutputFunction    mapOutputFunctionType
+}
+type outputFuncRegister map[string]outputFunc
 
-var StringFunctionRegister = outputFunctionRegister{}
-var MapFunctionRegister = mapOutputFunctionRegister{}
+var register = outputFuncRegister{}
+
+func (f outputFunc) isMapFunc() bool {
+	return f.mapOutputFunction != nil
+}
 
 func RegisterStringFunction(name string, outputFunction stringOutputFunctionType) {
-	StringFunctionRegister[name] = outputFunction
+	register[name] = outputFunc{stringOutputFunction: outputFunction}
 }
 func RegisterMapFunction(name string, outputFunction mapOutputFunctionType) {
-	MapFunctionRegister[name] = outputFunction
+	register[name] = outputFunc{mapOutputFunction: outputFunction}
 }
 
 func PushString(outputArg string, outputString string) error {
 	outputArgArray := strings.Split(outputArg, ":")
 
-	if f, ok := StringFunctionRegister[outputArgArray[0]]; ok {
+	if f, ok := register[outputArgArray[0]]; ok {
 		var parameter string
 		if len(outputArgArray) == 1 {
 			parameter = ""
@@ -34,23 +40,20 @@ func PushString(outputArg string, outputString string) error {
 			parameter = outputArgArray[1]
 		}
 
-		err := f(outputString, parameter)
+		err := f.stringOutputFunction(outputString, parameter)
 		return err
 	}
 	return errors.New("Unknown output: " + outputArg)
 }
 
 func PushMap(outputArg string, outputData pipeline.StructuredData, extra []string) error {
-	if f, ok := MapFunctionRegister[outputArg]; ok {
-		err := f(outputData, extra)
+	if f, ok := register[outputArg]; ok {
+		err := f.mapOutputFunction(outputData, extra)
 		return err
 	}
 	return errors.New("Unknown output: " + outputArg)
 }
 
 func RequiresMap(outputArg string) bool {
-	if _, ok := MapFunctionRegister[outputArg]; ok {
-		return true
-	}
-	return false
+	return register[outputArg].isMapFunc()
 }

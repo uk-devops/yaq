@@ -1,4 +1,4 @@
-package output_test
+package output
 
 import (
 	"reflect"
@@ -6,7 +6,6 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	. "github.com/saliceti/yaq/internal/output"
 	"github.com/saliceti/yaq/internal/pipeline"
 )
 
@@ -25,19 +24,19 @@ func testOutputFromMap(s pipeline.StructuredData, extra []string) error {
 var _ = Describe("Register", func() {
 	Context("real function: stdout", func() {
 		It("registers stdout", func() {
-			Expect(reflect.ValueOf(StringFunctionRegister["stdout"]).Pointer()).To(
+			Expect(reflect.ValueOf(register["stdout"].stringOutputFunction).Pointer()).To(
 				Equal(reflect.ValueOf(PushToStdout).Pointer()))
 		})
 	})
 	Context("the string function exists", func() {
 		It("registers the string function", func() {
 			RegisterStringFunction("t1", testOutputFromString)
-			Expect(reflect.ValueOf(StringFunctionRegister["t1"]).Pointer()).To(
+			Expect(reflect.ValueOf(register["t1"].stringOutputFunction).Pointer()).To(
 				Equal(reflect.ValueOf(testOutputFromString).Pointer()))
 		})
 		It("the string function is called successfully", func() {
 			RegisterStringFunction("t2", testOutputFromString)
-			StringFunctionRegister["t2"]("dummy", "parameter")
+			register["t2"].stringOutputFunction("dummy", "parameter")
 			Expect(iHaveBeenCalled).To(BeTrue())
 		})
 	})
@@ -51,12 +50,12 @@ var _ = Describe("Register", func() {
 	Context("the map function exists", func() {
 		It("registers the map function", func() {
 			RegisterMapFunction("t4", testOutputFromMap)
-			Expect(reflect.ValueOf(MapFunctionRegister["t4"]).Pointer()).To(
+			Expect(reflect.ValueOf(register["t4"].mapOutputFunction).Pointer()).To(
 				Equal(reflect.ValueOf(testOutputFromMap).Pointer()))
 		})
 		It("the map function is called successfully", func() {
 			RegisterMapFunction("t5", testOutputFromMap)
-			MapFunctionRegister["t5"](pipeline.GenericMap{"dummy": "value"}, nil)
+			register["t5"].mapOutputFunction(pipeline.GenericMap{"dummy": "value"}, nil)
 			Expect(iHaveBeenCalled).To(BeTrue())
 		})
 	})
