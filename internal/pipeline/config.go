@@ -63,3 +63,16 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 
 	return &config, outputBuffer.String(), nil
 }
+
+
+func SplitArg(arg string) (string, string) {
+	var name, parameter string
+	argArray := strings.Split(arg, ":")
+	name = argArray[0]
+	if len(argArray) == 1 {
+		parameter = ""
+	} else {
+		parameter = argArray[1]
+	}
+	return name, parameter
+}
