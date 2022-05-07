@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// ConverterConfig is a struct to store the map converter configuration
+// Config is a struct to store the initial configuration
 type Config struct {
 	Input  arrayFlags
 	DumpTo string
