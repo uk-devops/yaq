@@ -20,7 +20,7 @@ func ProcessWithJQ(inputData pipeline.StructuredData, jqExpression string) (pipe
 
 	dataMap, ok := inputData.(pipeline.GenericMap)
 	if !ok {
-		return nil, errors.New("Not a map")
+		return nil, errors.New("not a map")
 	}
 	iter := query.Run(map[string]interface{}(dataMap))
 
@@ -50,7 +50,7 @@ func ProcessWithJQ(inputData pipeline.StructuredData, jqExpression string) (pipe
 		case []interface{}:
 			return pipeline.GenericArray(o), nil
 		default:
-			return nil, errors.New("Cannot decode jq result")
+			return nil, errors.New("cannot decode jq result")
 		}
 	} else {
 		return output, nil

@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+	//lint:ignore ST1001 this is only used for tests
 	. "github.com/onsi/gomega"
 )
 
