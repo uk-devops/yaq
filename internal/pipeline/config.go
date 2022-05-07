@@ -38,6 +38,7 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 -i stdin
 -i file:/path/to/file
 -i keyvault-secret-map:<keyvault-name>/<secret-name>
+-i keyvault-secrets:<keyvault-name>
 (required)`)
 	flags.StringVar(&config.Transform, "t", "", `Apply transformation to data. Available transformations:
 -t jq:"jq expression"
@@ -49,6 +50,8 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 	flags.StringVar(&config.Output, "o", "stdout", `Push to output. Available outputs:
 -o stdout
 -o file:/path/to/file
+-o keyvault-secret:<keyvault-name>/<secret-name>
+-o keyvault-secrets:<keyvault-name>
 `)
 
 	err := flags.Parse(args)
@@ -63,7 +66,6 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 
 	return &config, outputBuffer.String(), nil
 }
-
 
 func SplitArg(arg string) (string, string) {
 	var name, parameter string
