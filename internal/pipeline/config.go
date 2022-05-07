@@ -37,6 +37,7 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 	flags.Var(&config.Input, "i", `Pull from input. -i may be repeated to fetch more inputs. Available inputs:
 -i stdin
 -i file:/path/to/file
+-i keyvault-secret-map:<keyvault-name>/<secret-name>
 (required)`)
 	flags.StringVar(&config.Transform, "t", "", `Apply transformation to data. Available transformations:
 -t jq:"jq expression"
