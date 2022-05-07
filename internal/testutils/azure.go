@@ -1,7 +1,9 @@
 package testutils
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
@@ -17,4 +19,15 @@ func KVClient(kvName string) *azsecrets.Client {
 	Expect(err).NotTo(HaveOccurred())
 
 	return client
+}
+
+func DeleteSecret(client *azsecrets.Client, secretName string) {
+	resp, err := client.BeginDeleteSecret(context.TODO(), secretName, nil)
+	Expect(err).NotTo(HaveOccurred())
+
+	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	Expect(err).NotTo(HaveOccurred())
+
+	_, err = client.PurgeDeletedSecret(context.TODO(), secretName, nil)
+	Expect(err).NotTo(HaveOccurred())
 }
