@@ -10,7 +10,7 @@ import (
 	"github.com/saliceti/yaq/pipeline"
 )
 
-func testDump(m interface{}) (string, error) {
+func testDump(m pipeline.StructuredData) (string, error) {
 	return "{structured output}", nil
 }
 

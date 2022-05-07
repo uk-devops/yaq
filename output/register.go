@@ -3,10 +3,11 @@ package output
 import (
 	"errors"
 	"strings"
+	"github.com/saliceti/yaq/pipeline"
 )
 
 type stringOutputFunctionType func(string, string) error
-type mapOutputFunctionType func(interface{}, []string) error
+type mapOutputFunctionType func(pipeline.StructuredData, []string) error
 
 type outputFunctionRegister map[string]stringOutputFunctionType
 type mapOutputFunctionRegister map[string]mapOutputFunctionType
@@ -38,7 +39,7 @@ func PushString(outputArg string, outputString string) error {
 	return errors.New("Unknown output: " + outputArg)
 }
 
-func PushMap(outputArg string, outputData interface{}, extra []string) error {
+func PushMap(outputArg string, outputData pipeline.StructuredData, extra []string) error {
 	if f, ok := MapFunctionRegister[outputArg]; ok {
 		err := f(outputData, extra)
 		return err

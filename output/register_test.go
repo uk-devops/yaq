@@ -17,7 +17,7 @@ func testOutputFromString(s, param string) error {
 	return nil
 }
 
-func testOutputFromMap(s interface{}, extra []string) error {
+func testOutputFromMap(s pipeline.StructuredData, extra []string) error {
 	iHaveBeenCalled = true
 	return nil
 }

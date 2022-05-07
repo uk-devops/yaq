@@ -23,8 +23,8 @@ func unmarshalArrayFromYAML(inString string) (pipeline.GenericArray, error) {
 	return out, err
 }
 
-func UnmarshalYAML(inString string) (interface{}, error) {
-	var d interface{}
+func UnmarshalYAML(inString string) (pipeline.StructuredData, error) {
+	var d pipeline.StructuredData
 	var err error
 
 	d, err = unmarshalMapFromYAML(inString)

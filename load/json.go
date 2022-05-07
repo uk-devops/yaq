@@ -2,6 +2,7 @@ package load
 
 import (
 	"encoding/json"
+
 	"github.com/saliceti/yaq/pipeline"
 )
 
@@ -23,8 +24,8 @@ func unmarshalArrayFromJSON(inString string) (pipeline.GenericArray, error) {
 	return out, err
 }
 
-func UnmarshalJSON(inString string) (interface{}, error) {
-	var d interface{}
+func UnmarshalJSON(inString string) (pipeline.StructuredData, error) {
+	var d pipeline.StructuredData
 	var err error
 
 	d, err = unmarshalMapFromJSON(inString)

@@ -29,23 +29,13 @@ var _ = Describe("Structured data", func() {
 		}
 	})
 
-	Context("add map to empty initial data", func() {
-		BeforeEach(func() {
-			sd = StructuredData{}
-		})
-		It("returns the map", func() {
-			sd.Append(m2)
-			Expect(sd.Data).To(Equal(m2))
-		})
-	})
-
 	Context("2 maps with different keys", func() {
 		BeforeEach(func() {
-			sd = StructuredData{Data: m1}
+			sd = m1
 		})
 		It("returns a map with all keys", func() {
-			sd.Append(m2)
-			Expect(sd.Data).To(Equal(GenericMap{
+			nd := sd.Append(m2)
+			Expect(nd).To(Equal(GenericMap{
 				"a": 1,
 				"b": GenericMap{"c": 2},
 				"d": 3,
@@ -58,52 +48,42 @@ var _ = Describe("Structured data", func() {
 		var m3 GenericMap
 
 		BeforeEach(func() {
-			sd.Data = nil
-			sd = StructuredData{Data: m1}
+			sd = m1
 			m3 = GenericMap{
 				"a": 3,
 				"b": GenericMap{"c": 4},
 			}
 		})
 		It("returns a map with keys from second map taking priority", func() {
-			sd.Append(m3)
-			Expect(sd.Data).To(Equal(GenericMap{
+			nd := sd.Append(m3)
+			Expect(nd).To(Equal(GenericMap{
 				"a": 3,
 				"b": GenericMap{"c": 4},
 			}))
 		})
 	})
 
-	Context("add array to empty initial data", func() {
-		BeforeEach(func() {
-			sd = StructuredData{}
-		})
-		It("returns the array", func() {
-			sd.Append(a2)
-			Expect(sd.Data).To(Equal(a2))
-		})
-	})
-
 	Context("2 arrays", func() {
 		BeforeEach(func() {
-			sd = StructuredData{Data: a1}
+			sd = a1
 		})
 		It("returns the concatenated array", func() {
-			sd.Append(a2)
-			Expect(sd.Data).To(Equal(append(a1, a2...)))
+			nd := sd.Append(a2)
+			Expect(nd).To(Equal(append(a1, a2...)))
 		})
 	})
 
 	Context("1 map 1 array", func() {
 		var a GenericArray
+		var nd StructuredData
 
 		BeforeEach(func() {
-			sd = StructuredData{Data: m1}
-			sd.Append(a2)
+			sd = m1
+			nd = sd.Append(a2)
 		})
 		It("returns an array", func() {
 			var ok bool
-			a, ok = sd.Data.(GenericArray)
+			a, ok = nd.(GenericArray)
 			Expect(ok).To(BeTrue())
 		})
 		It("the first element is the map", func() {
@@ -117,14 +97,15 @@ var _ = Describe("Structured data", func() {
 
 	Context("1 array 1 map", func() {
 		var a GenericArray
+		var nd StructuredData
 
 		BeforeEach(func() {
-			sd = StructuredData{Data: a1}
-			sd.Append(m2)
+			sd = a1
+			nd = sd.Append(m2)
 		})
 		It("returns an array", func() {
 			var ok bool
-			a, ok = sd.Data.(GenericArray)
+			a, ok = nd.(GenericArray)
 			Expect(ok).To(BeTrue())
 		})
 		It("the first and second elements are the array elements", func() {

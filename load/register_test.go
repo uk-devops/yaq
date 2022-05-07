@@ -7,10 +7,11 @@ import (
 	. "github.com/onsi/gomega"
 
 	. "github.com/saliceti/yaq/load"
+	"github.com/saliceti/yaq/pipeline"
 )
 
-func testLoad(dummy string) (interface{}, error) {
-	return map[string]int{}, nil
+func testLoad(dummy string) (pipeline.StructuredData, error) {
+	return pipeline.GenericMap{}, nil
 }
 
 var _ = Describe("Register", func() {
@@ -28,7 +29,7 @@ var _ = Describe("Register", func() {
 		})
 		It("the function is called successfully", func() {
 			Register("t2", testLoad)
-			Expect(FunctionRegister["t2"]("structured input")).To(Equal(map[string]int{}))
+			Expect(FunctionRegister["t2"]("structured input")).To(Equal(pipeline.GenericMap{}))
 		})
 	})
 })

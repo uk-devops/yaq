@@ -23,8 +23,7 @@ var _ = Describe("stdout", func() {
 			err = PushString("stdout", INPUT_DATA)
 			Expect(err).NotTo(HaveOccurred())
 
-			var output []byte
-			output = make([]byte, len(INPUT_DATA))
+			output := make([]byte, len(INPUT_DATA))
 
 			_, err = r.Read(output)
 			Expect(err).NotTo(HaveOccurred())

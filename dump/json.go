@@ -2,6 +2,8 @@ package dump
 
 import (
 	"encoding/json"
+
+	"github.com/saliceti/yaq/pipeline"
 )
 
 func init() {
@@ -11,7 +13,7 @@ func init() {
 const jsonPrefix = ""
 const jsonIndent = "  "
 
-func DumpToJSON(inputMap interface{}) (string, error) {
+func DumpToJSON(inputMap pipeline.StructuredData) (string, error) {
 	j, err := json.MarshalIndent(inputMap, jsonPrefix, jsonIndent)
 	if err != nil {
 		return "", err
