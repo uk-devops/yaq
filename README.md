@@ -75,6 +75,11 @@ bash-3.2$ echo $code
 % yaq -i keyvault-secret-map:myKeyVault/MySecret -d yaml
 ```
 
+### Write a map to an Azure keyvault secret
+```shell
+% yaq -i file:input.yml -i file:input.json -o keyvault-secret:myKeyvault/MySecret
+```
+
 ## Install
 
 Prerequisites: [go](https://go.dev) environment
