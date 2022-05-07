@@ -25,6 +25,10 @@ func RegisterMapFunction(name string, inputFunction mapOutputFunctionType) {
 	register[name] = inputFunc{mapOutputFunction: inputFunction}
 }
 
+func (f inputFunc) isMapFunc() bool {
+	return f.mapOutputFunction != nil
+}
+
 func ReadString(inputArg string) (string, error) {
 	inputName, parameter := pipeline.SplitArg(inputArg)
 
@@ -45,6 +49,17 @@ func ReadMap(inputArg string) (pipeline.StructuredData, error) {
 	}
 
 	return f.mapOutputFunction(parameter)
+}
+
+func CreatesMap(inputArg string) (bool, error) {
+	inputName, _ := pipeline.SplitArg(inputArg)
+
+	f, err := lookupInputFunction(inputName)
+	if err != nil {
+		return false, err
+	}
+
+	return f.isMapFunc(), nil
 }
 
 func lookupInputFunction(inputName string) (*inputFunc, error) {

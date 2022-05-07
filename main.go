@@ -29,25 +29,43 @@ func main() {
 		os.Exit(0)
 	}
 
-	var data pipeline.StructuredData
+	var data, newData pipeline.StructuredData
 
 	for _, inputArg := range config.Input {
 
-		inputString, err := input.ReadString(inputArg)
+		inputRequiresMap, err := input.CreatesMap(inputArg)
 		if err != nil {
-			if _, ok := err.(*pipeline.UsageError); ok {
-				log.Println(err)
-				config.Flags.Usage()
-				os.Exit(7)
-			}
 			log.Printf("Error: %v", err)
-			os.Exit(3)
+			os.Exit(10)
 		}
+		if inputRequiresMap {
+			newData, err = input.ReadMap(inputArg)
+			if err != nil {
+				if _, ok := err.(*pipeline.UsageError); ok {
+					log.Println(err)
+					config.Flags.Usage()
+					os.Exit(11)
+				}
+				log.Printf("Error: %v", err)
+				os.Exit(12)
+			}
+		} else {
+			inputString, err := input.ReadString(inputArg)
+			if err != nil {
+				if _, ok := err.(*pipeline.UsageError); ok {
+					log.Println(err)
+					config.Flags.Usage()
+					os.Exit(7)
+				}
+				log.Printf("Error: %v", err)
+				os.Exit(3)
+			}
 
-		newData, err := load.Unmarshal(inputString)
-		if err != nil {
-			log.Printf("Error: %v", err)
-			os.Exit(4)
+			newData, err = load.Unmarshal(inputString)
+			if err != nil {
+				log.Printf("Error: %v", err)
+				os.Exit(4)
+			}
 		}
 
 		if data == nil {
