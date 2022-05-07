@@ -70,6 +70,11 @@ bash-3.2$ echo $code
 % curl -s https://api.chucknorris.io/jokes/random  | yaq -i stdin -t jq:'.value | ascii_upcase' -o command -- bash -c 'echo $result && say $result'
 ```
 
+### Read a map from an Azure keyvault secret
+```shell
+% yaq -i keyvault-secret-map:myKeyVault/MySecret -d yaml
+```
+
 ## Install
 
 Prerequisites: [go](https://go.dev) environment
