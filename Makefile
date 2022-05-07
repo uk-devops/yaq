@@ -6,7 +6,7 @@ test:
 	ginkgo -r --label-filter='!azure'
 
 azure-test:
-	ginkgo -r --label-filter='azure'
+	ginkgo -r --label-filter='azure' --slow-spec-threshold 30s
 
 install: lint
 	go install .
