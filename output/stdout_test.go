@@ -9,9 +9,9 @@ import (
 	. "github.com/saliceti/yaq/output"
 )
 
-const INPUT_DATA = "input data"
-
 var _ = Describe("stdout", func() {
+	const INPUT_DATA = "input data"
+
 	Context("when a string is passed", func() {
 		It("writes it to stdout", func() {
 			r, w, err := os.Pipe()
@@ -20,7 +20,8 @@ var _ = Describe("stdout", func() {
 			origStdout := os.Stdout
 			os.Stdout = w
 
-			PushToStdout(INPUT_DATA)
+			err = PushString("stdout", INPUT_DATA)
+			Expect(err).NotTo(HaveOccurred())
 
 			var output []byte
 			output = make([]byte, len(INPUT_DATA))

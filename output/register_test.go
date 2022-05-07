@@ -12,8 +12,9 @@ import (
 
 var iHaveBeenCalled = false
 
-func testOutputFromString(s string) {
+func testOutputFromString(s, param string) error {
 	iHaveBeenCalled = true
+	return nil
 }
 
 func testOutputFromMap(s interface{}, extra []string) error {
@@ -36,7 +37,7 @@ var _ = Describe("Register", func() {
 		})
 		It("the string function is called successfully", func() {
 			RegisterStringFunction("t2", testOutputFromString)
-			StringFunctionRegister["t2"]("dummy")
+			StringFunctionRegister["t2"]("dummy", "parameter")
 			Expect(iHaveBeenCalled).To(BeTrue())
 		})
 	})

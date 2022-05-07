@@ -2,9 +2,10 @@ package output
 
 import (
 	"errors"
+	"strings"
 )
 
-type stringOutputFunctionType func(string)
+type stringOutputFunctionType func(string, string) error
 type mapOutputFunctionType func(interface{}, []string) error
 
 type outputFunctionRegister map[string]stringOutputFunctionType
@@ -21,9 +22,18 @@ func RegisterMapFunction(name string, outputFunction mapOutputFunctionType) {
 }
 
 func PushString(outputArg string, outputString string) error {
-	if f, ok := StringFunctionRegister[outputArg]; ok {
-		f(outputString)
-		return nil
+	outputArgArray := strings.Split(outputArg, ":")
+
+	if f, ok := StringFunctionRegister[outputArgArray[0]]; ok {
+		var parameter string
+		if len(outputArgArray) == 1 {
+			parameter = ""
+		} else {
+			parameter = outputArgArray[1]
+		}
+
+		err := f(outputString, parameter)
+		return err
 	}
 	return errors.New("Unknown output: " + outputArg)
 }

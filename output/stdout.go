@@ -8,6 +8,7 @@ func init() {
 	RegisterStringFunction("stdout", PushToStdout)
 }
 
-func PushToStdout(inputString string) {
+func PushToStdout(inputString, _ string) error {
 	fmt.Println(inputString)
+	return nil
 }
