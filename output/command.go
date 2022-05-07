@@ -17,7 +17,7 @@ func PushToCommandEnvVariables(inputMap pipeline.GenericMap, command []string) e
 	var cmd *exec.Cmd
 
 	if len(command) == 0 {
-		return errors.New("Empty command")
+		return errors.New("empty command")
 	} else if len(command) == 1 {
 		cmd = exec.Command(command[0])
 	} else if len(command) > 1 {

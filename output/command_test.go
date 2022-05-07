@@ -38,7 +38,7 @@ var _ = Describe("Command", func() {
 	Context("no command is passed", func() {
 		It("throws an error", func() {
 			err := PushMap("command", pipeline.GenericMap{"a": "1"}, nil)
-			Expect(err).To(MatchError("Empty command"))
+			Expect(err).To(MatchError("empty command"))
 
 		})
 	})
