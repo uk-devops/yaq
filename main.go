@@ -39,13 +39,13 @@ func main() {
 				config.Flags.Usage()
 				os.Exit(7)
 			}
-			log.Fatalf("Error: %v", err)
+			log.Printf("Error: %v", err)
 			os.Exit(3)
 		}
 
 		newInputMap, err := load.MapFromString(inputString)
 		if err != nil {
-			log.Fatalf("Error: %v", err)
+			log.Printf("Error: %v", err)
 			os.Exit(4)
 		}
 
@@ -57,19 +57,19 @@ func main() {
 	if output.RequiresMap(config.Output) {
 		err = output.PushMap(config.Output, inputMap, config.Extra)
 		if err != nil {
-			log.Fatalf("Error: %v", err)
+			log.Printf("Error: %v", err)
 			os.Exit(7)
 		}
 	} else {
 		outputString, err := dump.MapToString(config.DumpTo, inputMap)
 		if err != nil {
-			log.Fatalf("Error: %v", err)
+			log.Printf("Error: %v", err)
 			os.Exit(5)
 		}
 
 		err = output.PushString(config.Output, outputString)
 		if err != nil {
-			log.Fatalf("Error: %v", err)
+			log.Printf("Error: %v", err)
 			os.Exit(6)
 		}
 	}
