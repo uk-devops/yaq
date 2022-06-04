@@ -89,6 +89,12 @@ bash-3.2$ echo $code
 % yaq -i file:input.yml -o keyvault-secrets:myKeyvault
 ```
 
+### Edit secrets interactively
+```shell
+% yaq -i keyvault-secret-map:myKeyvault/mySecret -d yaml -t editor:vim -o keyvault-secret:myKeyvault/mySecret
+<Opens vim to edit the data as yaml. And saves it back to the Keyvault secret if the syntax is correct>
+```
+
 ## Install
 
 Prerequisites: [go](https://go.dev) environment
