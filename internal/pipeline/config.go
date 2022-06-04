@@ -42,6 +42,7 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 (required)`)
 	flags.StringVar(&config.Transform, "t", "", `Apply transformation to data. Available transformations:
 -t jq:"jq expression"
+-t editor:<editor program (e.g.: vim)>
 (default: No transformation)`)
 	flags.StringVar(&config.DumpTo, "d", "json", `Dump to format. Available formats:
 -d json
