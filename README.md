@@ -5,7 +5,7 @@ Utility to collect structured data and push it somewhere else it any format.
 For example, convert from json to yaml:
 
 ```shell
-% echo '{"code": 1234}' | yaq -i stdin -d yaml
+% echo '{"code": 1234}' | yaq -d yaml
 code: 1234
 ```
 
@@ -21,7 +21,7 @@ It can also...
 Convert from yaml to json:
 
 ```shell
-% echo 'code: 1234' | yaq -i stdin -d json
+% echo 'code: 1234' | yaq -d json
 {
   "code": 1234
 }
