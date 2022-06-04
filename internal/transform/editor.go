@@ -25,6 +25,7 @@ func ProcessWithEditor(inputData pipeline.StructuredData, editor string) (pipeli
 	if err != nil {
 		return nil, err
 	}
+	defer os.Remove(tempFile.Name())
 
 	err = os.WriteFile(tempFile.Name(), yamlData, 0755)
 	if err != nil {
@@ -58,8 +59,6 @@ func ProcessWithEditor(inputData pipeline.StructuredData, editor string) (pipeli
 	if err != nil {
 		return nil, err
 	}
-
-	os.Remove(tempFile.Name())
 
 	return out, nil
 }
