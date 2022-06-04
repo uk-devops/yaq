@@ -24,11 +24,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if config.Input == nil {
-		config.Flags.Usage()
-		os.Exit(0)
-	}
-
 	var data, newData pipeline.StructuredData
 
 	for _, inputArg := range config.Input {

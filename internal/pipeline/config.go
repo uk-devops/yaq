@@ -39,7 +39,7 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 -i file:/path/to/file
 -i keyvault-secret-map:<keyvault-name>/<secret-name>
 -i keyvault-secrets:<keyvault-name>
-(required)`)
+(default: "stdin")`)
 	flags.StringVar(&config.Transform, "t", "", `Apply transformation to data. Available transformations:
 -t jq:"jq expression"
 -t editor:<editor program (e.g.: vim)>
@@ -60,12 +60,22 @@ func GetConfig(progname string, args []string) (*Config, string, error) {
 		return nil, outputBuffer.String(), err
 	}
 
+	config.Input = setInputDefault(config.Input)
+
 	config.Extra = flags.Args()
 	config.Flags = *flags
 	// Revert to stdout so Usage() can be called later on
 	flags.SetOutput(os.Stdout)
 
 	return &config, outputBuffer.String(), nil
+}
+
+func setInputDefault(inputFlags arrayFlags) arrayFlags {
+	if inputFlags == nil {
+		return arrayFlags{"stdin"}
+	} else {
+		return inputFlags
+	}
 }
 
 func SplitArg(arg string) (string, string) {

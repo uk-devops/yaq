@@ -18,8 +18,8 @@ var _ = Describe("Build and run", func() {
 			session = runProgram(binaryPath, []string{})
 		})
 
-		It("exits with status 0", func() {
-			Eventually(session).Should(gexec.Exit(0))
+		It("exits with status 7", func() {
+			Eventually(session).Should(gexec.Exit(7))
 		})
 
 		It("prints usage", func() {
