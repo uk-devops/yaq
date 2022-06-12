@@ -19,7 +19,7 @@ var _ = Describe("Config", func() {
 		},
 		Entry("default arguments", []string{"-i", "stdin", "-d", "json", "-o", "stdout"}, []string{"stdin"}, "json", "stdout"),
 		Entry("all arguments", []string{"-i", "the-input", "-d", "the-dump-format", "-o", "the-output"}, []string{"the-input"}, "the-dump-format", "the-output"),
-		Entry("missing input argument", []string{"-d", "the-dump-format", "-o", "the-output"}, nil, "the-dump-format", "the-output"),
+		Entry("missing input argument", []string{"-d", "the-dump-format", "-o", "the-output"}, []string{"stdin"}, "the-dump-format", "the-output"),
 		Entry("missing dump argument", []string{"-o", "the-output", "-i", "the-input"}, []string{"the-input"}, "json", "the-output"),
 		Entry("missing output argument", []string{"-i", "the-input", "-d", "the-dump-format"}, []string{"the-input"}, "the-dump-format", "stdout"),
 		Entry("multipart argument", []string{"-i", "the-input:the-parameter"}, []string{"the-input:the-parameter"}, "json", "stdout"),
