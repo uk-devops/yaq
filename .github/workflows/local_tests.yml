@@ -1,5 +1,4 @@
 name: Local tests
-concurrency: Run local tests for each pull request
 
 on:
   pull_request:
