@@ -15,7 +15,11 @@ This command will:
 - Convert to yaml data
 - Push to standard out
 
-It can also...
+## Download
+Select the package for your system from the [latest release](https://github.com/uk-devops/yaq/releases/latest). Unzip and add `yaq` to your PATH.
+
+
+## It can also...
 
 ### Read from yaml or json
 Convert from yaml to json:
@@ -89,13 +93,18 @@ bash-3.2$ echo $code
 % yaq -i file:input.yml -o keyvault-secrets:myKeyvault
 ```
 
+### Copy all secrets between Azure keyvaults
+```shell
+% yaq -i keyvault-secrets:myKeyvault1 -o keyvault-secrets:myKeyvault2
+```
+
 ### Edit secrets interactively
 ```shell
 % yaq -i keyvault-secret-map:myKeyvault/mySecret -d yaml -t editor:vim -o keyvault-secret:myKeyvault/mySecret
 <Opens vim to edit the data as yaml. And saves it back to the Keyvault secret if the syntax is correct>
 ```
 
-## Install
+## Install from source
 
 Prerequisites: [go](https://go.dev) environment
 
