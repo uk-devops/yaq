@@ -69,9 +69,31 @@ bash-3.2$ echo $code
 1234
 ```
 
-### Apply a transformation with jq syntax
 ```shell
-% curl -s https://api.chucknorris.io/jokes/random  | yaq -i stdin -t jq:'.value | ascii_upcase' -o command -- bash -c 'echo $result && say $result'
+% yaq -i file:input.yml -o command -- ruby -e 'p ENV'
+{"code"=>1234}
+```
+
+### Consume an API as environment variables in any process
+Open latest xkcd [Mac]
+```shell
+% curl -s "https://xkcd.com/info.0.json" | yaq -o command -- bash -c 'open $img'
+```
+
+Display your IP
+```shell
+% curl -s "https://api.ipify.org/?format=json" | yaq -o command -- ruby -e 'puts "Your ip is: " + ENV["ip"]'
+```
+
+Say Chuck Norris fact [Mac]
+```shell
+% curl -s https://api.chucknorris.io/jokes/random  | yaq -o command -- bash -c 'say $value'
+```
+
+### Apply a transformation with jq syntax
+List of bank holidays in UK in 2022
+```shell
+% curl -s https://date.nager.at/api/v2/publicholidays/2022/GB | yaq -t jq:'.[].date' -d yaml
 ```
 
 ### Read a map from an Azure keyvault secret
