@@ -18,11 +18,18 @@ func ProcessWithJQ(inputData pipeline.StructuredData, jqExpression string) (pipe
 		log.Fatalln(err)
 	}
 
+	var iter gojq.Iter
+
 	dataMap, ok := inputData.(pipeline.GenericMap)
 	if !ok {
-		return nil, errors.New("not a map")
+		dataArray, ok := inputData.(pipeline.GenericArray)
+		if !ok {
+			return nil, errors.New("not a map or array")
+		}
+		iter = query.Run([]interface{}(dataArray))
+	} else {
+		iter = query.Run(map[string]interface{}(dataMap))
 	}
-	iter := query.Run(map[string]interface{}(dataMap))
 
 	var output pipeline.GenericArray
 

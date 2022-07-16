@@ -11,9 +11,9 @@ import (
 var _ = Describe("jq", func() {
 	var output pipeline.StructuredData
 	var err error
-	mapInput := pipeline.GenericMap{"a": 1, "b": "c"}
 
 	Context("map input", func() {
+		mapInput := pipeline.GenericMap{"a": 1, "b": "c"}
 
 		Context("single output", func() {
 			Context("map output", func() {
@@ -82,6 +82,22 @@ var _ = Describe("jq", func() {
 				Expect(output).To(Equal(pipeline.GenericArray{"a", "b"}))
 			})
 
+		})
+	})
+	Context("array input", func() {
+		arrayInput := pipeline.GenericArray{
+			map[string]interface{}{"a": 1, "b": 1},
+			map[string]interface{}{"a": 2, "b": 2},
+		}
+		Context("array output", func() {
+			BeforeEach(func() {
+				jqExpression := ".[].b"
+				output, err = transform.ProcessWithJQ(arrayInput, jqExpression)
+				Expect(err).NotTo(HaveOccurred())
+			})
+			It("produces an array", func() {
+				Expect(output).To(Equal(pipeline.GenericArray{1, 2}))
+			})
 		})
 	})
 
